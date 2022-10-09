@@ -1,0 +1,11 @@
+{
+    "cursor": "/go/src/github.com/latonaio/DPFM_API_Caller/caller.go#L126",
+    "function": "data-platform-api-business-partner-exconf/DPFM_API_Caller.(*DPFMAPICaller).General",
+    "level": "INFO",
+    "message": {
+        "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+        "BusinessPartner": "101",
+        "ExistenceConf": true
+    },
+    "time": "2022-09-29T07:04:23Z"
+}

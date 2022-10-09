@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: data-platform-business-partner-exconf
+  name: data-platform-business-partner-exconf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: data-platform-business-partner-exconf
+  template:
+    metadata:
+      labels:
+        run: data-platform-business-partner-exconf
+    spec:
+      nodeName: worker
+      hostname: data-platform-business-partner-exconf
+      containers:
+        - name: data-platform-business-partner-exconf
+          image: latonaio/data-platform-business-partner-exconf
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/aion/Data
+            - name: ui
+              mountPath: /var/lib/aion/UI/data-platform-business-partner-exconf/public/
+          env:
+
+            - name : "RMQ_USER"
+              value: "XXXXXXXXXX"
+            - name : "RMQ_PASS"
+              value: "XXXXXXXXXX"
+            - name : "RMQ_ADDRESS"
+              value: "rabbitmq"
+            - name : "RMQ_PORT"
+              value: "5672"
+            - name : "RMQ_QUEUE_FROM"
+              value: "data-platform-api-business-partner-existence-queue-from"
+            - name : "RMQ_QUEUE_TO"
+              value: "data-platform-api-business-partner-existence-queue-to"
+            - name : "RMQ_VHOST"
+              value: "sap"
+            - name : "DB_USER"
+              value: "XXXXXXXXXX"
+            - name : "DB_PASS"
+              value: "XXXXXXXXXX"
+            - name : "DB_NAME"
+              value: "DataPlatformMastersAndTransactionsMysqlKube"
+            - name : "DB_ADDRESS"
+              value: "data-platform-masters-and-transactions-mysql-kube"
+            - name : "DB_PORT"
+              value: "3306"
+          resources:
+            limits:
+              cpu: "1"
+              memory: "200Mi"
+            requests:
+              cpu: "0.5"
+              memory: "100Mi"
+      volumes:
+        - name: data
+          hostPath:
+            path: /var/lib/aion/default/Data
+        - name: ui
+          hostPath:
+            path: /var/lib/aion/UI/data-platform-business-partner-exconf/public/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: data-platform-business-partner-exconf
+  name: data-platform-business-partner-exconf
+spec:
+  selector:
+    run: data-platform-business-partner-exconf
+  type: NodePort
+  ports:
+    - name: api
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 30575
