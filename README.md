@@ -1,5 +1,5 @@
-# data-platform-api-business-partner-exconf
-data-platform-api-business-partner-exconf は、データ連携基盤において、ビジネスパートナの存在性チェックを行うためのレポジトリです。
+# data-platform-api-business-partner-exconf-rmq-kube-rmq-kube
+data-platform-api-business-partner-exconf-rmq-kube は、データ連携基盤において、ビジネスパートナの存在性チェックを行うためのレポジトリです。
 
 ## 動作環境
 ・ エッジ Kubernetes （推奨）    
@@ -36,7 +36,7 @@ func ExistenceCheck(ctx context.Context, db *database.Mysql, partnerId string) (
 ```
 
 ## Input
-data-platform-api-business-partner-exconf は、入力ファイルとして、RabbitMQ からのメッセージを JSON 形式で受け取ります。入力ファイルは、input_files 内の test.json にあります。
+data-platform-api-business-partner-exconf-rmq-kube は、入力ファイルとして、RabbitMQ からのメッセージを JSON 形式で受け取ります。入力ファイルは、input_files 内の test.json にあります。
 
 ```
 {
@@ -59,19 +59,19 @@ data-platform-api-business-partner-exconf は、入力ファイルとして、Ra
 ```
 
 ## RabbitMQ からのメッセージ受信による イベントドリヴン の ランタイム実行
-data-platform-api-business-partner-exconf は、RabbitMQ からのメッセージを受け取ると、イベントドリヴンでランタイムを実行します。  
+data-platform-api-business-partner-exconf-rmq-kube は、RabbitMQ からのメッセージを受け取ると、イベントドリヴンでランタイムを実行します。  
 AION の仕様では、Kubernetes 上 の 当該マイクロサービスPod は 立ち上がったまま待機状態で当該メッセージを受け取り、（コンテナ起動などの段取時間をカットして）即座にランタイムを実行します。　 
 
 
 ## RabbitMQ の マスタサーバ環境
-data-platform-api-business-partner-exconf が利用する RabbitMQ のマスタサーバ環境は、rabbitmq-on-kubernetes です。  
+data-platform-api-business-partner-exconf-rmq-kube が利用する RabbitMQ のマスタサーバ環境は、rabbitmq-on-kubernetes です。  
 当該マスタサーバ環境は、同じエッジコンピューティングデバイスに配置されても、別の物理(仮想)サーバ内に配置されても、どちらでも構いません。
 
 ## RabbitMQ の Golang Runtime ライブラリ
-data-platform-api-business-partner-exconf は、RabbitMQ の Golang Runtime ライブラリ として、rabbitmq-golang-clientを利用しています。
+data-platform-api-business-partner-exconf-rmq-kube は、RabbitMQ の Golang Runtime ライブラリ として、rabbitmq-golang-clientを利用しています。
 
 ## デプロイ・稼働
-data-platform-api-business-partner-exconf の デプロイ・稼働 を行うためには、aion-service-definitions の services.yml に、本レポジトリの services.yml を設定する必要があります。
+data-platform-api-business-partner-exconf-rmq-kube の デプロイ・稼働 を行うためには、aion-service-definitions の services.yml に、本レポジトリの services.yml を設定する必要があります。
 
 kubectl apply - f 等で Deployment作成後、以下のコマンドで Pod が正しく生成されていることを確認してください。
 
@@ -81,12 +81,12 @@ $ kubectl get pods
 
 
 ## Output
-data-platform-api-business-partner-exconf では、[golang-logging-library](https://github.com/latonaio/golang-logging-library) により、Output として、RabbitMQ へのメッセージを JSON 形式で出力します。ビジネスパートナの対象値が存在する場合 true、存在しない場合 false、を返します。"cursor" ～ "time"は、golang-logging-library による 定型フォーマットの出力結果です。
+data-platform-api-business-partner-exconf-rmq-kube では、[golang-logging-library](https://github.com/latonaio/golang-logging-library) により、Output として、RabbitMQ へのメッセージを JSON 形式で出力します。ビジネスパートナの対象値が存在する場合 true、存在しない場合 false、を返します。"cursor" ～ "time"は、golang-logging-library による 定型フォーマットの出力結果です。
 
 ```
 {
     "cursor": "/go/src/github.com/latonaio/DPFM_API_Caller/caller.go#L126",
-    "function": "data-platform-api-business-partner-exconf/DPFM_API_Caller.(*DPFMAPICaller).General",
+    "function": "data-platform-api-business-partner-exconf-rmq-kube/DPFM_API_Caller.(*DPFMAPICaller).General",
     "level": "INFO",
     "message": {
         "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
