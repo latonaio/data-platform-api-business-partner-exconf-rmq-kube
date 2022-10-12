@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"data-platform-business-partner-exconf/database"
-	"data-platform-business-partner-exconf/database/models"
+	"data-platform-api-business-partner-exconf-rmq-kube/database"
+	"data-platform-api-business-partner-exconf-rmq-kube/database/models"
 
 	"golang.org/x/xerrors"
 )

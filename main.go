@@ -2,10 +2,11 @@ package main
 
 import (
 	"context"
-	"data-platform-business-partner-exconf/config"
-	"data-platform-business-partner-exconf/database"
-	"data-platform-business-partner-exconf/input_reader"
-	"data-platform-business-partner-exconf/output_creator"
+	"data-platform-api-business-partner-exconf-rmq-kube/config"
+	"data-platform-api-business-partner-exconf-rmq-kube/database"
+	"data-platform-api-business-partner-exconf-rmq-kube/input_reader"
+	"data-platform-api-business-partner-exconf-rmq-kube/output_creator"
+	"fmt"
 
 	"github.com/latonaio/golang-logging-library/logger"
 	rabbitmq "github.com/latonaio/rabbitmq-golang-client"
@@ -47,20 +48,25 @@ func dataCheckProcess(
 	defer rmqMsg.Success()
 	data := rmqMsg.Data()
 	l.Info(data)
+	sessionId := getBodyHeader(data)
+	rmq.AddSendTemp(map[string]interface{}{"runtime_session_id": sessionId})
+	l.AddHeaderInfo(map[string]interface{}{"runtime_session_id": sessionId})
+
 	input, err := input_reader.ConvertToInput(data)
 	if err != nil {
 		l.Error("error: %+v", err)
 		return
 	}
-	exist, err := ExistenceCheck(ctx, db, input.BusinessPartner.BusinessPartner)
-	if err != nil {
-		l.Info("error: %+v", err)
-	}
+	exist, _ := ExistenceCheck(ctx, db, input.BusinessPartner.BusinessPartner)
 	output := output_creator.ConvertToOutput(
-		input.BusinessPartner.RuntimeSessionID,
 		input.BusinessPartner.BusinessPartner,
 		exist,
 	)
-	rmq.Send(c.RMQ.QueueTo()[0], map[string]interface{}{"BusinessPartnerExistence": output})
+	rmq.Send(c.RMQ.QueueTo()[0], map[string]interface{}{"BusinessPartner": output})
 	l.Info(output)
+}
+
+func getBodyHeader(data map[string]interface{}) string {
+	id := fmt.Sprintf("%v", data["runtime_session_id"])
+	return id
 }

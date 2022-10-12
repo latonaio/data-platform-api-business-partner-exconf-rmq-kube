@@ -11,17 +11,25 @@
             "mode": "auto",
             "program": "${workspaceRoot}",
             "env": {
-                "RMQ_USER": "XXXXXXXXXX",
-                "RMQ_PASS": "XXXXXXXXXX",
-                "RMQ_ADDRESS": "XXXXXXXXXX",
+                "SAP_API_BASE_URL": "http://XXX.XX.XX.XXX:8080/sap/opu/odata/sap/",
+                "SAP_USER": "XXXXXXXXXXXX",
+                "SAP_PASS": "XXXXXXXXXXXX",
+                "SAP_TOKEN_REFRESH_URL": "http://XXX.XX.XX.XXX:8080/sap/opu/odata/sap/API_PRODUCT_SRV",
+                "SAP_RETRY_MAX_COUNT": "1",
+                "SAP_RETRY_INTERVAL": "500",
+
+                "RMQ_USER": "XXXXXXXXXXXX",
+                "RMQ_PASS": "XXXXXXXXXXXX",
+                "RMQ_ADDRESS": "XXXXXXXXXXXX",
                 "RMQ_PORT": "32094",
                 "RMQ_QUEUE_FROM": "data-platform-api-business-partner-existence-queue-from",
                 "RMQ_QUEUE_TO": "data-platform-api-business-partner-existence-queue-to",
-                "RMQ_VHOST": "XXXXXXXXXX",
-                "DB_USER": "XXXXXXXXXX",
-                "DB_PASS": "XXXXXXXXXX",
+                "RMQ_VHOST": "sap",
+
+                "DB_USER": "XXXXXXXXXXXX",
+                "DB_PASS": "XXXXXXXXXXXX",
                 "DB_NAME": "DataPlatformMastersAndTransactionsMysqlKube",
-                "DB_ADDRESS": "XXXXXXXXXX",
+                "DB_ADDRESS": "XXXXXXXXXXXX",
                 "DB_PORT": "30010"
             }
         }

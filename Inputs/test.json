@@ -5,13 +5,10 @@
     "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
     "filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
     "BusinessPartner": {
-        "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
         "BusinessPartner": "101"
     },
     "api_schema": "DPFMBusinessPartnerReads",
-    "accepter": [
-        "All"
-    ],
+    "accepter": ["All"],
     "business_partner_code": "101",
     "deleted": false
 }

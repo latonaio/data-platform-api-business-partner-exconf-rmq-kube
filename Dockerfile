@@ -12,16 +12,16 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o data-platform-business-partner-exconf
+RUN go build -o data-platform-api-business-partner-exconf-rmq-kube
 
 # Runtime Container
 FROM alpine:3.14
 RUN apk add --no-cache libc6-compat
-ENV SERVICE=data-platform-business-partner-exconf \
+ENV SERVICE=data-platform-api-business-partner-exconf-rmq-kube \
     APP_DIR="${AION_HOME}/${POSITION}/${SERVICE}"
 
 WORKDIR ${AION_HOME}
 
-COPY --from=builder /go/src/github.com/latonaio/data-platform-business-partner-exconf .
+COPY --from=builder /go/src/github.com/latonaio/data-platform-api-business-partner-exconf-rmq-kube .
 
-CMD ["./data-platform-business-partner-exconf"]
+CMD ["./data-platform-api-business-partner-exconf-rmq-kube"]
