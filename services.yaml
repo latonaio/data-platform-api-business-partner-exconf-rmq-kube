@@ -9,10 +9,12 @@ spec:
   selector:
     matchLabels:
       run: data-platform-api-business-partner-exconf-rmq-kube
+      app: BUSINESS_PARTNER
   template:
     metadata:
       labels:
         run: data-platform-api-business-partner-exconf-rmq-kube
+        app: BUSINESS_PARTNER
     spec:
       nodeName: worker
       hostname: data-platform-api-business-partner-exconf-rmq-kube
@@ -81,4 +83,4 @@ spec:
       port: 8080
       protocol: TCP
       targetPort: 8080
-      nodePort: 30575
+      nodePort: 30508
