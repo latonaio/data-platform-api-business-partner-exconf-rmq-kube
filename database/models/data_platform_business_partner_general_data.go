@@ -24,7 +24,7 @@ import (
 
 // DataPlatformBusinessPartnerGeneralDatum is an object representing the database table.
 type DataPlatformBusinessPartnerGeneralDatum struct {
-	BusinessPartner               string      `boil:"BusinessPartner" json:"BusinessPartner" toml:"BusinessPartner" yaml:"BusinessPartner"`
+	BusinessPartner               int         `boil:"BusinessPartner" json:"BusinessPartner" toml:"BusinessPartner" yaml:"BusinessPartner"`
 	BusinessPartnerFullName       null.String `boil:"BusinessPartnerFullName" json:"BusinessPartnerFullName,omitempty" toml:"BusinessPartnerFullName" yaml:"BusinessPartnerFullName,omitempty"`
 	BusinessPartnerName           null.String `boil:"BusinessPartnerName" json:"BusinessPartnerName,omitempty" toml:"BusinessPartnerName" yaml:"BusinessPartnerName,omitempty"`
 	CreationDate                  null.String `boil:"CreationDate" json:"CreationDate,omitempty" toml:"CreationDate" yaml:"CreationDate,omitempty"`
@@ -52,10 +52,9 @@ type DataPlatformBusinessPartnerGeneralDatum struct {
 	BusinessPartnerIsBlocked      null.Bool   `boil:"BusinessPartnerIsBlocked" json:"BusinessPartnerIsBlocked,omitempty" toml:"BusinessPartnerIsBlocked" yaml:"BusinessPartnerIsBlocked,omitempty"`
 	GroupBusinessPartnerName1     null.String `boil:"GroupBusinessPartnerName1" json:"GroupBusinessPartnerName1,omitempty" toml:"GroupBusinessPartnerName1" yaml:"GroupBusinessPartnerName1,omitempty"`
 	GroupBusinessPartnerName2     null.String `boil:"GroupBusinessPartnerName2" json:"GroupBusinessPartnerName2,omitempty" toml:"GroupBusinessPartnerName2" yaml:"GroupBusinessPartnerName2,omitempty"`
-	IndependentAddressID          null.String `boil:"IndependentAddressID" json:"IndependentAddressID,omitempty" toml:"IndependentAddressID" yaml:"IndependentAddressID,omitempty"`
+	AddressID                     null.Int    `boil:"AddressID" json:"AddressID,omitempty" toml:"AddressID" yaml:"AddressID,omitempty"`
 	IsMarkedForArchiving          null.Bool   `boil:"IsMarkedForArchiving" json:"IsMarkedForArchiving,omitempty" toml:"IsMarkedForArchiving" yaml:"IsMarkedForArchiving,omitempty"`
 	BusinessPartnerIDByExtSystem  null.String `boil:"BusinessPartnerIDByExtSystem" json:"BusinessPartnerIDByExtSystem,omitempty" toml:"BusinessPartnerIDByExtSystem" yaml:"BusinessPartnerIDByExtSystem,omitempty"`
-	TradingPartner                null.String `boil:"TradingPartner" json:"TradingPartner,omitempty" toml:"TradingPartner" yaml:"TradingPartner,omitempty"`
 
 	R *dataPlatformBusinessPartnerGeneralDatumR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L dataPlatformBusinessPartnerGeneralDatumL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -90,10 +89,9 @@ var DataPlatformBusinessPartnerGeneralDatumColumns = struct {
 	BusinessPartnerIsBlocked      string
 	GroupBusinessPartnerName1     string
 	GroupBusinessPartnerName2     string
-	IndependentAddressID          string
+	AddressID                     string
 	IsMarkedForArchiving          string
 	BusinessPartnerIDByExtSystem  string
-	TradingPartner                string
 }{
 	BusinessPartner:               "BusinessPartner",
 	BusinessPartnerFullName:       "BusinessPartnerFullName",
@@ -123,10 +121,9 @@ var DataPlatformBusinessPartnerGeneralDatumColumns = struct {
 	BusinessPartnerIsBlocked:      "BusinessPartnerIsBlocked",
 	GroupBusinessPartnerName1:     "GroupBusinessPartnerName1",
 	GroupBusinessPartnerName2:     "GroupBusinessPartnerName2",
-	IndependentAddressID:          "IndependentAddressID",
+	AddressID:                     "AddressID",
 	IsMarkedForArchiving:          "IsMarkedForArchiving",
 	BusinessPartnerIDByExtSystem:  "BusinessPartnerIDByExtSystem",
-	TradingPartner:                "TradingPartner",
 }
 
 var DataPlatformBusinessPartnerGeneralDatumTableColumns = struct {
@@ -158,10 +155,9 @@ var DataPlatformBusinessPartnerGeneralDatumTableColumns = struct {
 	BusinessPartnerIsBlocked      string
 	GroupBusinessPartnerName1     string
 	GroupBusinessPartnerName2     string
-	IndependentAddressID          string
+	AddressID                     string
 	IsMarkedForArchiving          string
 	BusinessPartnerIDByExtSystem  string
-	TradingPartner                string
 }{
 	BusinessPartner:               "data_platform_business_partner_general_data.BusinessPartner",
 	BusinessPartnerFullName:       "data_platform_business_partner_general_data.BusinessPartnerFullName",
@@ -191,30 +187,29 @@ var DataPlatformBusinessPartnerGeneralDatumTableColumns = struct {
 	BusinessPartnerIsBlocked:      "data_platform_business_partner_general_data.BusinessPartnerIsBlocked",
 	GroupBusinessPartnerName1:     "data_platform_business_partner_general_data.GroupBusinessPartnerName1",
 	GroupBusinessPartnerName2:     "data_platform_business_partner_general_data.GroupBusinessPartnerName2",
-	IndependentAddressID:          "data_platform_business_partner_general_data.IndependentAddressID",
+	AddressID:                     "data_platform_business_partner_general_data.AddressID",
 	IsMarkedForArchiving:          "data_platform_business_partner_general_data.IsMarkedForArchiving",
 	BusinessPartnerIDByExtSystem:  "data_platform_business_partner_general_data.BusinessPartnerIDByExtSystem",
-	TradingPartner:                "data_platform_business_partner_general_data.TradingPartner",
 }
 
 // Generated where
 
-type whereHelperstring struct{ field string }
+type whereHelperint struct{ field string }
 
-func (w whereHelperstring) EQ(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperstring) NEQ(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperstring) LT(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperstring) LTE(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperstring) GT(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperstring) GTE(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperstring) IN(slice []string) qm.QueryMod {
+func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperint) IN(slice []int) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
 	}
 	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
 }
-func (w whereHelperstring) NIN(slice []string) qm.QueryMod {
+func (w whereHelperint) NIN(slice []int) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
@@ -284,8 +279,46 @@ func (w whereHelpernull_Bool) GTE(x null.Bool) qm.QueryMod {
 func (w whereHelpernull_Bool) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
 func (w whereHelpernull_Bool) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
 
+type whereHelpernull_Int struct{ field string }
+
+func (w whereHelpernull_Int) EQ(x null.Int) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, false, x)
+}
+func (w whereHelpernull_Int) NEQ(x null.Int) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, true, x)
+}
+func (w whereHelpernull_Int) LT(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpernull_Int) LTE(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpernull_Int) GT(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpernull_Int) GTE(x null.Int) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+func (w whereHelpernull_Int) IN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
+func (w whereHelpernull_Int) NIN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
+}
+
+func (w whereHelpernull_Int) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_Int) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+
 var DataPlatformBusinessPartnerGeneralDatumWhere = struct {
-	BusinessPartner               whereHelperstring
+	BusinessPartner               whereHelperint
 	BusinessPartnerFullName       whereHelpernull_String
 	BusinessPartnerName           whereHelpernull_String
 	CreationDate                  whereHelpernull_String
@@ -313,12 +346,11 @@ var DataPlatformBusinessPartnerGeneralDatumWhere = struct {
 	BusinessPartnerIsBlocked      whereHelpernull_Bool
 	GroupBusinessPartnerName1     whereHelpernull_String
 	GroupBusinessPartnerName2     whereHelpernull_String
-	IndependentAddressID          whereHelpernull_String
+	AddressID                     whereHelpernull_Int
 	IsMarkedForArchiving          whereHelpernull_Bool
 	BusinessPartnerIDByExtSystem  whereHelpernull_String
-	TradingPartner                whereHelpernull_String
 }{
-	BusinessPartner:               whereHelperstring{field: "`data_platform_business_partner_general_data`.`BusinessPartner`"},
+	BusinessPartner:               whereHelperint{field: "`data_platform_business_partner_general_data`.`BusinessPartner`"},
 	BusinessPartnerFullName:       whereHelpernull_String{field: "`data_platform_business_partner_general_data`.`BusinessPartnerFullName`"},
 	BusinessPartnerName:           whereHelpernull_String{field: "`data_platform_business_partner_general_data`.`BusinessPartnerName`"},
 	CreationDate:                  whereHelpernull_String{field: "`data_platform_business_partner_general_data`.`CreationDate`"},
@@ -346,10 +378,9 @@ var DataPlatformBusinessPartnerGeneralDatumWhere = struct {
 	BusinessPartnerIsBlocked:      whereHelpernull_Bool{field: "`data_platform_business_partner_general_data`.`BusinessPartnerIsBlocked`"},
 	GroupBusinessPartnerName1:     whereHelpernull_String{field: "`data_platform_business_partner_general_data`.`GroupBusinessPartnerName1`"},
 	GroupBusinessPartnerName2:     whereHelpernull_String{field: "`data_platform_business_partner_general_data`.`GroupBusinessPartnerName2`"},
-	IndependentAddressID:          whereHelpernull_String{field: "`data_platform_business_partner_general_data`.`IndependentAddressID`"},
+	AddressID:                     whereHelpernull_Int{field: "`data_platform_business_partner_general_data`.`AddressID`"},
 	IsMarkedForArchiving:          whereHelpernull_Bool{field: "`data_platform_business_partner_general_data`.`IsMarkedForArchiving`"},
 	BusinessPartnerIDByExtSystem:  whereHelpernull_String{field: "`data_platform_business_partner_general_data`.`BusinessPartnerIDByExtSystem`"},
-	TradingPartner:                whereHelpernull_String{field: "`data_platform_business_partner_general_data`.`TradingPartner`"},
 }
 
 // DataPlatformBusinessPartnerGeneralDatumRels is where relationship names are stored.
@@ -369,8 +400,8 @@ func (*dataPlatformBusinessPartnerGeneralDatumR) NewStruct() *dataPlatformBusine
 type dataPlatformBusinessPartnerGeneralDatumL struct{}
 
 var (
-	dataPlatformBusinessPartnerGeneralDatumAllColumns            = []string{"BusinessPartner", "BusinessPartnerFullName", "BusinessPartnerName", "CreationDate", "CreationTime", "Industry", "LegalEntityRegistration", "Language", "LastChangeDate", "LastChangeTime", "OrganizationBPName1", "OrganizationBPName2", "OrganizationBPName3", "OrganizationBPName4", "BPGroup1", "BPGroup2", "BPGroup3", "BPGroup4", "BPGroup5", "OrganizationFoundationDate", "OrganizationLiquidationDate", "SearchTerm1", "SearchTerm2", "BusinessPartnerBirthplaceName", "BusinessPartnerDeathDate", "BusinessPartnerIsBlocked", "GroupBusinessPartnerName1", "GroupBusinessPartnerName2", "IndependentAddressID", "IsMarkedForArchiving", "BusinessPartnerIDByExtSystem", "TradingPartner"}
-	dataPlatformBusinessPartnerGeneralDatumColumnsWithoutDefault = []string{"BusinessPartner", "BusinessPartnerFullName", "BusinessPartnerName", "CreationDate", "CreationTime", "Industry", "LegalEntityRegistration", "Language", "LastChangeDate", "LastChangeTime", "OrganizationBPName1", "OrganizationBPName2", "OrganizationBPName3", "OrganizationBPName4", "BPGroup1", "BPGroup2", "BPGroup3", "BPGroup4", "BPGroup5", "OrganizationFoundationDate", "OrganizationLiquidationDate", "SearchTerm1", "SearchTerm2", "BusinessPartnerBirthplaceName", "BusinessPartnerDeathDate", "BusinessPartnerIsBlocked", "GroupBusinessPartnerName1", "GroupBusinessPartnerName2", "IndependentAddressID", "IsMarkedForArchiving", "BusinessPartnerIDByExtSystem", "TradingPartner"}
+	dataPlatformBusinessPartnerGeneralDatumAllColumns            = []string{"BusinessPartner", "BusinessPartnerFullName", "BusinessPartnerName", "CreationDate", "CreationTime", "Industry", "LegalEntityRegistration", "Language", "LastChangeDate", "LastChangeTime", "OrganizationBPName1", "OrganizationBPName2", "OrganizationBPName3", "OrganizationBPName4", "BPGroup1", "BPGroup2", "BPGroup3", "BPGroup4", "BPGroup5", "OrganizationFoundationDate", "OrganizationLiquidationDate", "SearchTerm1", "SearchTerm2", "BusinessPartnerBirthplaceName", "BusinessPartnerDeathDate", "BusinessPartnerIsBlocked", "GroupBusinessPartnerName1", "GroupBusinessPartnerName2", "AddressID", "IsMarkedForArchiving", "BusinessPartnerIDByExtSystem"}
+	dataPlatformBusinessPartnerGeneralDatumColumnsWithoutDefault = []string{"BusinessPartner", "BusinessPartnerFullName", "BusinessPartnerName", "CreationDate", "CreationTime", "Industry", "LegalEntityRegistration", "Language", "LastChangeDate", "LastChangeTime", "OrganizationBPName1", "OrganizationBPName2", "OrganizationBPName3", "OrganizationBPName4", "BPGroup1", "BPGroup2", "BPGroup3", "BPGroup4", "BPGroup5", "OrganizationFoundationDate", "OrganizationLiquidationDate", "SearchTerm1", "SearchTerm2", "BusinessPartnerBirthplaceName", "BusinessPartnerDeathDate", "BusinessPartnerIsBlocked", "GroupBusinessPartnerName1", "GroupBusinessPartnerName2", "AddressID", "IsMarkedForArchiving", "BusinessPartnerIDByExtSystem"}
 	dataPlatformBusinessPartnerGeneralDatumColumnsWithDefault    = []string{}
 	dataPlatformBusinessPartnerGeneralDatumPrimaryKeyColumns     = []string{"BusinessPartner"}
 	dataPlatformBusinessPartnerGeneralDatumGeneratedColumns      = []string{}
@@ -667,7 +698,7 @@ func DataPlatformBusinessPartnerGeneralData(mods ...qm.QueryMod) dataPlatformBus
 
 // FindDataPlatformBusinessPartnerGeneralDatum retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindDataPlatformBusinessPartnerGeneralDatum(ctx context.Context, exec boil.ContextExecutor, businessPartner string, selectCols ...string) (*DataPlatformBusinessPartnerGeneralDatum, error) {
+func FindDataPlatformBusinessPartnerGeneralDatum(ctx context.Context, exec boil.ContextExecutor, businessPartner int, selectCols ...string) (*DataPlatformBusinessPartnerGeneralDatum, error) {
 	dataPlatformBusinessPartnerGeneralDatumObj := &DataPlatformBusinessPartnerGeneralDatum{}
 
 	sel := "*"
@@ -1204,7 +1235,7 @@ func (o *DataPlatformBusinessPartnerGeneralDatumSlice) ReloadAll(ctx context.Con
 }
 
 // DataPlatformBusinessPartnerGeneralDatumExists checks if the DataPlatformBusinessPartnerGeneralDatum row exists.
-func DataPlatformBusinessPartnerGeneralDatumExists(ctx context.Context, exec boil.ContextExecutor, businessPartner string) (bool, error) {
+func DataPlatformBusinessPartnerGeneralDatumExists(ctx context.Context, exec boil.ContextExecutor, businessPartner int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `data_platform_business_partner_general_data` where `BusinessPartner`=? limit 1)"
 

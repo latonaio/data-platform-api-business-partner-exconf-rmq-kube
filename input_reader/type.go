@@ -8,5 +8,5 @@ type Input struct {
 	Deleted             bool            `json:"deleted"`
 }
 type BusinessPartner struct {
-	BusinessPartner string `json:"BusinessPartner"`
+	BusinessPartner int `json:"BusinessPartner"`
 }

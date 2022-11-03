@@ -4,12 +4,10 @@ import (
 	"context"
 	"data-platform-api-business-partner-exconf-rmq-kube/config"
 	"data-platform-api-business-partner-exconf-rmq-kube/database"
-	"data-platform-api-business-partner-exconf-rmq-kube/input_reader"
-	"data-platform-api-business-partner-exconf-rmq-kube/output_creator"
 	"fmt"
 
 	"github.com/latonaio/golang-logging-library/logger"
-	rabbitmq "github.com/latonaio/rabbitmq-golang-client"
+	rabbitmq "github.com/latonaio/rabbitmq-golang-client-for-data-platform"
 )
 
 func main() {
@@ -22,48 +20,36 @@ func main() {
 		return
 	}
 
-	rmq, err := rabbitmq.NewRabbitmqClient(c.RMQ.URL(), c.RMQ.QueueFrom(), c.RMQ.QueueTo())
+	rmq, err := rabbitmq.NewRabbitmqClient(c.RMQ.URL(), c.RMQ.QueueFrom(), "", nil, -1)
 	if err != nil {
 		l.Fatal(err.Error())
 	}
-	defer rmq.Close()
 	iter, err := rmq.Iterator()
 	if err != nil {
 		l.Fatal(err.Error())
 	}
 	defer rmq.Stop()
 	for msg := range iter {
-		dataCheckProcess(ctx, c, rmq, db, msg, l)
+		go dataCheckProcess(ctx, c, db, msg)
 	}
 }
 
 func dataCheckProcess(
 	ctx context.Context,
 	c *config.Conf,
-	rmq *rabbitmq.RabbitmqClient,
 	db *database.Mysql,
 	rmqMsg rabbitmq.RabbitmqMessage,
-	l *logger.Logger,
 ) {
 	defer rmqMsg.Success()
+	l := logger.NewLogger()
 	data := rmqMsg.Data()
-	l.Info(data)
 	sessionId := getBodyHeader(data)
-	rmq.AddSendTemp(map[string]interface{}{"runtime_session_id": sessionId})
 	l.AddHeaderInfo(map[string]interface{}{"runtime_session_id": sessionId})
+	l.Info(rmqMsg.Data())
 
-	input, err := input_reader.ConvertToInput(data)
-	if err != nil {
-		l.Error("error: %+v", err)
-		return
-	}
-	exist, _ := ExistenceCheck(ctx, db, input.BusinessPartner.BusinessPartner)
-	output := output_creator.ConvertToOutput(
-		input.BusinessPartner.BusinessPartner,
-		exist,
-	)
-	rmq.Send(c.RMQ.QueueTo()[0], map[string]interface{}{"BusinessPartner": output})
-	l.Info(output)
+	exist := (*ExistencyChecker).Check(NewExistencyChecker(ctx, db, l), rmqMsg)
+	rmqMsg.Respond(exist)
+	l.Info(exist)
 }
 
 func getBodyHeader(data map[string]interface{}) string {

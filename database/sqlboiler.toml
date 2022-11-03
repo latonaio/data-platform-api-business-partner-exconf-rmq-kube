@@ -4,9 +4,9 @@ wipe = true
 
 [mysql]
 dbname = "DataPlatformMastersAndTransactionsMysqlKube"
-host = "XXXXXXXXXX"
+host = "XXXXXXXXXXXXXXX"
 port = 30010
-user = "XXXXXXXXXX"
-pass = "XXXXXXXXXX"
+user = "XXXXXXXXXXXXXXX"
+pass = "XXXXXXXXXXXXXXX"
 sslmode = "false"
 whitelist = [ "data_platform_business_partner_general_data" ]

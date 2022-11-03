@@ -22,31 +22,25 @@ spec:
         - name: data-platform-api-business-partner-exconf-rmq-kube
           image: latonaio/data-platform-api-business-partner-exconf-rmq-kube
           imagePullPolicy: Always
-          volumeMounts:
-            - name: data
-              mountPath: /var/lib/aion/Data
-            - name: ui
-              mountPath: /var/lib/aion/UI/data-platform-api-business-partner-exconf-rmq-kube/public/
           env:
-
             - name : "RMQ_USER"
-              value: "XXXXXXXXXX"
+              value: "XXXXXXXXX"
             - name : "RMQ_PASS"
-              value: "XXXXXXXXXX"
+              value: "XXXXXXXXX"
             - name : "RMQ_ADDRESS"
               value: "rabbitmq"
             - name : "RMQ_PORT"
               value: "5672"
             - name : "RMQ_QUEUE_FROM"
-              value: "data-platform-api-business-partner-existence-queue-from"
+              value: "data-platform-api-business-partner-exconf-queue-from"
             - name : "RMQ_QUEUE_TO"
-              value: "data-platform-api-business-partner-existence-queue-to"
+              value: "data-platform-api-business-partner-exconf-queue-to"
             - name : "RMQ_VHOST"
-              value: "XXXXXXXXXXXX"
+              value: "XXXXXXXXX"
             - name : "DB_USER"
-              value: "XXXXXXXXXX"
+              value: "XXXXXXXXX"
             - name : "DB_PASS"
-              value: "XXXXXXXXXX"
+              value: "XXXXXXXXX"
             - name : "DB_NAME"
               value: "DataPlatformMastersAndTransactionsMysqlKube"
             - name : "DB_ADDRESS"
