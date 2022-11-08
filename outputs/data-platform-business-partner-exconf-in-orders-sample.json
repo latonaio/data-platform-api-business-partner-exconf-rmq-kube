@@ -1,0 +1,11 @@
+{
+	"cursor": "/go/src/github.com/latonaio/existence_check/checker.go#L116",
+	"function": "data-platform-api-orders-creates-rmq-kube/existence_check.(*ExistenceChecker).bpExistenceCheck",
+	"level": "INFO",
+	"message": {
+		"BusinessPartner": 201,
+		"ExistenceConf": true
+	},
+	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+	"time": "2022-11-08T07:50:59Z"
+}

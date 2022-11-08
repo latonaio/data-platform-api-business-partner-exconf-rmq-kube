@@ -6,7 +6,7 @@ import (
 	"data-platform-api-business-partner-exconf-rmq-kube/database"
 	"fmt"
 
-	"github.com/latonaio/golang-logging-library/logger"
+	"github.com/latonaio/golang-logging-library-for-data-platform/logger"
 	rabbitmq "github.com/latonaio/rabbitmq-golang-client-for-data-platform"
 )
 
@@ -47,7 +47,8 @@ func dataCheckProcess(
 	l.AddHeaderInfo(map[string]interface{}{"runtime_session_id": sessionId})
 	l.Info(rmqMsg.Data())
 
-	exist := (*ExistencyChecker).Check(NewExistencyChecker(ctx, db, l), rmqMsg)
+	checker := NewExistencyChecker(ctx, db, l)
+	exist := checker.Check(rmqMsg)
 	rmqMsg.Respond(exist)
 	l.Info(exist)
 }

@@ -23,37 +23,17 @@ spec:
           image: latonaio/data-platform-api-business-partner-exconf-rmq-kube
           imagePullPolicy: Always
           env:
-            - name : "RMQ_USER"
-              value: "XXXXXXXXX"
-            - name : "RMQ_PASS"
-              value: "XXXXXXXXX"
-            - name : "RMQ_ADDRESS"
-              value: "rabbitmq"
-            - name : "RMQ_PORT"
-              value: "5672"
             - name : "RMQ_QUEUE_FROM"
               value: "data-platform-api-business-partner-exconf-queue-from"
             - name : "RMQ_QUEUE_TO"
               value: "data-platform-api-business-partner-exconf-queue-to"
-            - name : "RMQ_VHOST"
-              value: "XXXXXXXXX"
-            - name : "DB_USER"
-              value: "XXXXXXXXX"
-            - name : "DB_PASS"
-              value: "XXXXXXXXX"
-            - name : "DB_NAME"
+            - name : "MYSQL_DB_NAME"
               value: "DataPlatformMastersAndTransactionsMysqlKube"
-            - name : "DB_ADDRESS"
-              value: "data-platform-masters-and-transactions-mysql-kube"
-            - name : "DB_PORT"
-              value: "3306"
-          resources:
-            limits:
-              cpu: "1"
-              memory: "200Mi"
-            requests:
-              cpu: "0.5"
-              memory: "100Mi"
+          envFrom:
+            - configMapRef:
+                name: env-config
+            - secretRef:
+                name: env-secret
       volumes:
         - name: data
           hostPath:

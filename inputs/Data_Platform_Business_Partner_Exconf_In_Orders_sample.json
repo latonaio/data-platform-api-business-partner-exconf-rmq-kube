@@ -3,6 +3,7 @@
 	"result": true,
 	"redis_key": "abcdefg",
 	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+	"business_partner": null,
 	"filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
 	"service_label": "ORDERS",
 	"BusinessPartner": {

@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/latonaio/golang-logging-library/logger"
+	"github.com/latonaio/golang-logging-library-for-data-platform/logger"
 	rabbitmq "github.com/latonaio/rabbitmq-golang-client-for-data-platform"
 )
 
@@ -68,7 +68,7 @@ func (e *ExistencyChecker) Check(data rabbitmq.RabbitmqMessage) map[string]inter
 	return existData
 }
 
-func (e *ExistencyChecker) checkBusinessPartner(val int) bool { // 変更箇所(関数全体)
+func (e *ExistencyChecker) checkBusinessPartner(val int) bool {
 	start := time.Now()
 	d, err := models.FindDataPlatformBusinessPartnerGeneralDatum(e.ctx, e.db, val)
 	if d == nil || err != nil {

@@ -1,8 +1,8 @@
 package output_creator
 
-func ConvertToOutput(partnerId string, exist bool) *Output {
+func ConvertToOutput(businessPartner string, exist bool) *Output {
 	return &Output{
-		BusinessPartner: partnerId,
+		BusinessPartner: businessPartner,
 		ExistenceConf:   exist,
 	}
 }
