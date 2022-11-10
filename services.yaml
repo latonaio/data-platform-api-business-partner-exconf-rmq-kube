@@ -24,9 +24,9 @@ spec:
           imagePullPolicy: Always
           env:
             - name : "RMQ_QUEUE_FROM"
-              value: "data-platform-api-business-partner-exconf-queue-from"
+              value: "data-platform-api-business-partner-exconf-queue"
             - name : "RMQ_QUEUE_TO"
-              value: "data-platform-api-business-partner-exconf-queue-to"
+              value: "data-platform-api-business-partner-exconf-queue"
             - name : "MYSQL_DB_NAME"
               value: "DataPlatformMastersAndTransactionsMysqlKube"
           envFrom:

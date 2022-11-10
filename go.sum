@@ -236,12 +236,10 @@ github.com/kr/pretty v0.2.0/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfn
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
-github.com/latonaio/golang-logging-library v1.0.9 h1:yMFbKuvvir4LmGPmrW2NfDnFqDwikSKcZBSCfItSspk=
-github.com/latonaio/golang-logging-library v1.0.9/go.mod h1:x7IYDemIJCKcwHF7wEWbvQecnm+8E/WrGG9QrYmAvJ4=
 github.com/latonaio/golang-logging-library-for-data-platform v1.0.1 h1:WXGyvSH1yfZqRxRY2fq6eF9i6yHZ8y77sbHt0HRLOgQ=
 github.com/latonaio/golang-logging-library-for-data-platform v1.0.1/go.mod h1:9Uv8NjExV1DRExDDktbud6L2K1kcUaYowUbBFaK1SLE=
-github.com/latonaio/rabbitmq-golang-client-for-data-platform v1.0.2 h1:xDllncfnlaFJxIJbR/lvjb1eFpKWX6AH4V7E13r+JP0=
-github.com/latonaio/rabbitmq-golang-client-for-data-platform v1.0.2/go.mod h1:ctn3XnL+GVLS6+I1XyEdoA/w5gmNwinjvYCuAB+FqLw=
+github.com/latonaio/rabbitmq-golang-client-for-data-platform v1.0.3 h1:HwXsp331RGdghJghvgdNnM7jDz1tUHyY0v2dawwypTU=
+github.com/latonaio/rabbitmq-golang-client-for-data-platform v1.0.3/go.mod h1:ctn3XnL+GVLS6+I1XyEdoA/w5gmNwinjvYCuAB+FqLw=
 github.com/lib/pq v1.0.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/lib/pq v1.2.1-0.20191011153232-f91d3411e481/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/magiconair/properties v1.8.5/go.mod h1:y3VJvCyxH9uVvJTWEGAELF3aiYNyPKd5NZ3oSwXrF60=
