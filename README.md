@@ -15,20 +15,44 @@ Input で取得されたファイルに基づいて、existence_check.go で、 
 existence_check.go の 以下の箇所が、指定された API をコールするソースコードです。
 
 ```
-func ExistenceCheck(ctx context.Context, db *database.Mysql, partnerId string) (bool, error) {
-	d, err := models.FindDataPlatformBusinessPartnerGeneralDatum(
-		ctx, db, partnerId, models.DataPlatformBusinessPartnerGeneralDatumColumns.BusinessPartner,
-	)
+func (e *ExistenceConf) Conf(data rabbitmq.RabbitmqMessage) map[string]interface{} {
+	existData := map[string]interface{}{
+		"ExistenceConf": false,
+	}
+	input := dpfm_api_input_reader.SDC{}
+	err := json.Unmarshal(data.Raw(), &input)
 	if err != nil {
-		return false, xerrors.Errorf("cannot get data: %w", err)
+		return existData
 	}
-	if d == nil {
-		return false, nil
+
+	conf := "BusinessPartner"
+	businessPartnerID := *input.BusinessPartnerID.BusinessPartnerID
+	notKeyExistence := make([]int, 0, 1)
+	KeyExistence := make([]int, 0, 1)
+
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	existData[conf] = businessPartnerID
+	go func() {
+		defer wg.Done()
+		if !e.confBusinessPartnerGeneral(businessPartnerID) {
+			notKeyExistence = append(notKeyExistence, businessPartnerID)
+			return
+		}
+		KeyExistence = append(KeyExistence, businessPartnerID)
+	}()
+
+	wg.Wait()
+
+	if len(KeyExistence) == 0 {
+		return existData
 	}
-	if d.BusinessPartner != partnerId {
-		return false, nil
+	if len(notKeyExistence) > 0 {
+		return existData
 	}
-	return true, nil
+
+	existData["ExistenceConf"] = true
+	return existData
 }
 ```
 
@@ -37,15 +61,15 @@ data-platform-api-business-partner-exconf-rmq-kube では、以下のInputファ
 
 ```
 {
-	"connection_key": "response",
+	"connection_key": "request",
 	"result": true,
 	"redis_key": "abcdefg",
 	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
-	"business_partner": null,
+	"business_partner": 201,
 	"filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
 	"service_label": "ORDERS",
 	"BusinessPartner": {
-        "BusinessPartner": 101
+		"BusinessPartner": 101
 	},
 	"api_schema": "DPFMOrdersCreates",
 	"accepter": ["All"],
