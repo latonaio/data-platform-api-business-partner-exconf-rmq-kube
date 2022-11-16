@@ -3,8 +3,11 @@ package main
 import (
 	"context"
 	dpfm_api_caller "data-platform-api-business-partner-exconf-rmq-kube/DPFM_API_Caller"
+	dpfm_api_input_reader "data-platform-api-business-partner-exconf-rmq-kube/DPFM_API_Input_Reader"
+	dpfm_api_output_formatter "data-platform-api-business-partner-exconf-rmq-kube/DPFM_API_Output_Formatter"
 	"data-platform-api-business-partner-exconf-rmq-kube/config"
 	"data-platform-api-business-partner-exconf-rmq-kube/database"
+	"encoding/json"
 	"fmt"
 
 	"github.com/latonaio/golang-logging-library-for-data-platform/logger"
@@ -43,15 +46,27 @@ func dataCallProcess(
 ) {
 	defer rmqMsg.Success()
 	l := logger.NewLogger()
-	data := rmqMsg.Data()
-	sessionId := getBodyHeader(data)
+	sessionId := getBodyHeader(rmqMsg.Data())
 	l.AddHeaderInfo(map[string]interface{}{"runtime_session_id": sessionId})
-	l.Info(rmqMsg.Data())
+	input := &dpfm_api_input_reader.SDC{}
+	err := json.Unmarshal(rmqMsg.Raw(), input)
+	if err != nil {
+		l.Error(rmqMsg.Data())
+		return
+	}
 
 	conf := dpfm_api_caller.NewExistenceConf(ctx, db, l)
-	exist := conf.Conf(rmqMsg)
+	exist := conf.Conf(input)
 	rmqMsg.Respond(exist)
-	l.Info(exist)
+
+	out := dpfm_api_output_formatter.SDC{}
+	err = json.Unmarshal(rmqMsg.Raw(), &out)
+	if err != nil {
+		l.Error(rmqMsg.Data())
+		return
+	}
+	out.BusinessPartnerGeneral = *exist
+	l.JsonParseOut(out)
 }
 
 func getBodyHeader(data map[string]interface{}) string {

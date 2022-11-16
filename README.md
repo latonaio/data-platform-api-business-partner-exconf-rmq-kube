@@ -8,38 +8,32 @@ data-platform-api-business-partner-exconf-rmq-kube は、データ連携基盤�
 ## 存在確認先テーブル名
 以下のsqlファイルに対して、ビジネスパートナの存在確認が行われます。
 
-* data-platform-business-partner-general-data.sql（データ連携基盤 ビジネスパートナ - 一般データ）
+* data-platform-business-partner-sql-general-data.sql（データ連携基盤 ビジネスパートナ - 一般データ）
 
-## existence_check.go による存在性確認
-Input で取得されたファイルに基づいて、existence_check.go で、 API がコールされます。
-existence_check.go の 以下の箇所が、指定された API をコールするソースコードです。
+## caller.go による存在性確認
+Input で取得されたファイルに基づいて、caller.go で、 API がコールされます。
+caller.go の 以下の箇所が、指定された API をコールするソースコードです。
 
 ```
-func (e *ExistenceConf) Conf(data rabbitmq.RabbitmqMessage) map[string]interface{} {
-	existData := map[string]interface{}{
-		"ExistenceConf": false,
-	}
-	input := dpfm_api_input_reader.SDC{}
-	err := json.Unmarshal(data.Raw(), &input)
-	if err != nil {
-		return existData
-	}
-
-	conf := "BusinessPartner"
-	businessPartnerID := *input.BusinessPartnerID.BusinessPartnerID
+func (e *ExistenceConf) Conf(input *dpfm_api_input_reader.SDC) *dpfm_api_output_formatter.BusinessPartnerGeneral {
+	businessPartner := *input.BusinessPartnerGeneral.BusinessPartner
 	notKeyExistence := make([]int, 0, 1)
 	KeyExistence := make([]int, 0, 1)
 
+	existData := &dpfm_api_output_formatter.BusinessPartnerGeneral{
+		BusinessPartner: businessPartner,
+		ExistenceConf:   false,
+	}
+
 	wg := sync.WaitGroup{}
 	wg.Add(1)
-	existData[conf] = businessPartnerID
 	go func() {
 		defer wg.Done()
-		if !e.confBusinessPartnerGeneral(businessPartnerID) {
-			notKeyExistence = append(notKeyExistence, businessPartnerID)
+		if !e.confBusinessPartnerGeneral(businessPartner) {
+			notKeyExistence = append(notKeyExistence, businessPartner)
 			return
 		}
-		KeyExistence = append(KeyExistence, businessPartnerID)
+		KeyExistence = append(KeyExistence, businessPartner)
 	}()
 
 	wg.Wait()
@@ -51,7 +45,7 @@ func (e *ExistenceConf) Conf(data rabbitmq.RabbitmqMessage) map[string]interface
 		return existData
 	}
 
-	existData["ExistenceConf"] = true
+	existData.ExistenceConf = true
 	return existData
 }
 ```
@@ -64,15 +58,16 @@ data-platform-api-business-partner-exconf-rmq-kube では、以下のInputファ
 	"connection_key": "request",
 	"result": true,
 	"redis_key": "abcdefg",
+	"api_status_code": 200,
 	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
 	"business_partner": 201,
 	"filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
 	"service_label": "ORDERS",
-	"BusinessPartner": {
+	"BusinessPartnerGeneral": {
 		"BusinessPartner": 101
 	},
 	"api_schema": "DPFMOrdersCreates",
-	"accepter": ["All"],
+	"accepter": ["Header"],
 	"order_id": null,
 	"deleted": false
 }
@@ -83,14 +78,23 @@ data-platform-api-business-partner-exconf-rmq-kube では、[golang-logging-libr
 
 ```
 {
-	"cursor": "/go/src/github.com/latonaio/existence_check/checker.go#L116",
-	"function": "data-platform-api-orders-creates-rmq-kube/existence_check.(*ExistenceChecker).bpExistenceCheck",
-	"level": "INFO",
-	"message": {
-		"BusinessPartner": 201,
-		"ExistenceConf": true
-	},
-	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
-	"time": "2022-11-08T07:50:59Z"
+  "connection_key": "request",
+  "result": true,
+  "redis_key": "abcdefg",
+  "filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
+  "api_status_code": 200,
+  "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+  "business_partner": 201,
+  "service_label": "ORDERS",
+  "BusinessPartnerGeneral": {
+    "BusinessPartner": 101,
+    "ExistenceConf": true
+  },
+  "api_schema": "DPFMOrdersCreates",
+  "accepter": [
+    "Header"
+  ],
+  "order_id": null,
+  "deleted": false
 }
 ```

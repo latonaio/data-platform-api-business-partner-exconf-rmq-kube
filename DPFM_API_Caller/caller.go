@@ -3,13 +3,11 @@ package dpfm_api_caller
 import (
 	"context"
 	dpfm_api_input_reader "data-platform-api-business-partner-exconf-rmq-kube/DPFM_API_Input_Reader"
+	dpfm_api_output_formatter "data-platform-api-business-partner-exconf-rmq-kube/DPFM_API_Output_Formatter"
 	"data-platform-api-business-partner-exconf-rmq-kube/database"
-	"encoding/json"
-	"fmt"
 	"sync"
 
 	"github.com/latonaio/golang-logging-library-for-data-platform/logger"
-	rabbitmq "github.com/latonaio/rabbitmq-golang-client-for-data-platform"
 )
 
 type ExistenceConf struct {
@@ -26,31 +24,25 @@ func NewExistenceConf(ctx context.Context, db *database.Mysql, l *logger.Logger)
 	}
 }
 
-func (e *ExistenceConf) Conf(data rabbitmq.RabbitmqMessage) map[string]interface{} {
-	existData := map[string]interface{}{
-		"ExistenceConf": false,
-	}
-	input := dpfm_api_input_reader.SDC{}
-	err := json.Unmarshal(data.Raw(), &input)
-	if err != nil {
-		return existData
-	}
-
-	conf := "BusinessPartner"
-	businessPartnerID := *input.BusinessPartnerID.BusinessPartnerID
+func (e *ExistenceConf) Conf(input *dpfm_api_input_reader.SDC) *dpfm_api_output_formatter.BusinessPartnerGeneral {
+	businessPartner := *input.BusinessPartnerGeneral.BusinessPartner
 	notKeyExistence := make([]int, 0, 1)
 	KeyExistence := make([]int, 0, 1)
 
+	existData := &dpfm_api_output_formatter.BusinessPartnerGeneral{
+		BusinessPartner: businessPartner,
+		ExistenceConf:   false,
+	}
+
 	wg := sync.WaitGroup{}
 	wg.Add(1)
-	existData[conf] = businessPartnerID
 	go func() {
 		defer wg.Done()
-		if !e.confBusinessPartnerGeneral(businessPartnerID) {
-			notKeyExistence = append(notKeyExistence, businessPartnerID)
+		if !e.confBusinessPartnerGeneral(businessPartner) {
+			notKeyExistence = append(notKeyExistence, businessPartner)
 			return
 		}
-		KeyExistence = append(KeyExistence, businessPartnerID)
+		KeyExistence = append(KeyExistence, businessPartner)
 	}()
 
 	wg.Wait()
@@ -62,7 +54,7 @@ func (e *ExistenceConf) Conf(data rabbitmq.RabbitmqMessage) map[string]interface
 		return existData
 	}
 
-	existData["ExistenceConf"] = true
+	existData.ExistenceConf = true
 	return existData
 }
 
@@ -73,7 +65,7 @@ func (e *ExistenceConf) confBusinessPartnerGeneral(val int) bool {
 		WHERE BusinessPartner = ?;`, val,
 	)
 	if err != nil {
-		fmt.Printf("err = %+v \n", err)
+		e.l.Error(err)
 		return false
 	}
 
@@ -81,10 +73,9 @@ func (e *ExistenceConf) confBusinessPartnerGeneral(val int) bool {
 		var businessPartner int
 		err := rows.Scan(&businessPartner)
 		if err != nil {
-			fmt.Printf("err = %+v \n", err)
+			e.l.Error(err)
 			continue
 		}
-		fmt.Printf("data = %+v \n", businessPartner)
 		if businessPartner == val {
 			return true
 		}

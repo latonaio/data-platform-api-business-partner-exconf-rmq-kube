@@ -1,11 +1,20 @@
 {
-	"cursor": "/go/src/github.com/latonaio/existence_check/checker.go#L116",
-	"function": "data-platform-api-orders-creates-rmq-kube/existence_check.(*ExistenceChecker).bpExistenceCheck",
-	"level": "INFO",
-	"message": {
-		"BusinessPartner": 201,
-		"ExistenceConf": true
-	},
-	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
-	"time": "2022-11-08T07:50:59Z"
+  "connection_key": "request",
+  "result": true,
+  "redis_key": "abcdefg",
+  "filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
+  "api_status_code": 200,
+  "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+  "business_partner": 201,
+  "service_label": "ORDERS",
+  "BusinessPartnerGeneral": {
+    "BusinessPartner": 101,
+    "ExistenceConf": true
+  },
+  "api_schema": "DPFMOrdersCreates",
+  "accepter": [
+    "Header"
+  ],
+  "order_id": null,
+  "deleted": false
 }

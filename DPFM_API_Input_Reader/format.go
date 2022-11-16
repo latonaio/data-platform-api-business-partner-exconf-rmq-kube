@@ -4,9 +4,9 @@ import (
 	"data-platform-api-business-partner-exconf-rmq-kube/DPFM_API_Caller/requests"
 )
 
-func (sdc *SDC) ConvertToBusinessPartner() *requests.BusinessPartner {
-	data := sdc.BusinessPartnerID
-	return &requests.BusinessPartner{
-		BusinessPartnerID: data.BusinessPartnerID,
+func (sdc *SDC) ConvertToBusinessPartnerGeneral() *requests.BusinessPartnerGeneral {
+	data := sdc.BusinessPartnerGeneral
+	return &requests.BusinessPartnerGeneral{
+		BusinessPartner: data.BusinessPartner,
 	}
 }
