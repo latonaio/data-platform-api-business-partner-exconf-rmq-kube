@@ -39,7 +39,7 @@ func (e *ExistenceConf) Conf(msg rabbitmq.RabbitmqMessage) interface{} {
 
 	_, ok := input["BusinessPartnerGeneral"]
 	if ok {
-		input := &dpfm_api_input_reader.SDC{}
+		input := &dpfm_api_input_reader.GeneralSDC{}
 		err = json.Unmarshal(msg.Raw(), input)
 		ret = e.confBusinessPartnerGeneral(input)
 		goto endProcess
@@ -53,7 +53,7 @@ endProcess:
 	return ret
 }
 
-func (e *ExistenceConf) confBusinessPartnerGeneral(input *dpfm_api_input_reader.SDC) *dpfm_api_output_formatter.BusinessPartnerGeneral {
+func (e *ExistenceConf) confBusinessPartnerGeneral(input *dpfm_api_input_reader.GeneralSDC) *dpfm_api_output_formatter.BusinessPartnerGeneral {
 	exconf := dpfm_api_output_formatter.BusinessPartnerGeneral{
 		ExistenceConf: false,
 	}

@@ -53,7 +53,7 @@ type EC_MC struct {
 	Deleted       bool     `json:"deleted"`
 }
 
-type SDC struct {
+type GeneralSDC struct {
 	ConnectionKey          string `json:"connection_key"`
 	Result                 bool   `json:"result"`
 	RedisKey               string `json:"redis_key"`
